@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subs', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('user_id');
-            $table->string('subs_name', 100);
-            $table->date('billing_date');
-            $table->string('payment_method_used', 255);
-            $table->string('payment_method_type', 255);
-            $table->timestamps();
-        });
+        // Schema::create('subs', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->bigInteger('user_id');
+        //     $table->string('subs_name', 100);
+        //     $table->date('billing_date');
+        //     $table->string('payment_method_used', 255);
+        //     $table->string('payment_method_type', 255);
+        //     $table->timestamps();
+        // });
     }
 
     /**
