@@ -1,0 +1,7 @@
+{
+  "name": "subsMngr",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
