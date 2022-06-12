@@ -16,3 +16,14 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+$router->group(['prefix' => 'api'], function () use ($router) {
+    // Subscriptions
+    $router->get(uri: '/subs/{user_id}', action: 'SubsController@getSubs');
+    $router->post(uri: '/subs/{user_id}', action: 'SubsController@addSubs');
+    $router->put(uri: '/subs/{id}', action: 'SubsController@editSubs');
+    $router->delete(uri: '/subs/{id}', action: 'SubsController@deleteSubs');
+});
+
+// $router->post(uri: '/subs/{user_id}', action: 'subscriptionsController@addSubscription');
+// $router->put(uri: '/subs/{id}', action: 'subscriptionsController@editSubscription');
+// $router->delete(uri: '/subs/{id}', action: 'subscriptionsController@deleteSubscription');
