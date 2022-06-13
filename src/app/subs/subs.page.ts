@@ -11,9 +11,11 @@ export class SubsPage implements OnInit {
   constructor(private subsService:SubsService) { }
 
   ngOnInit() {
+   this.getSubs();
+  }
+   getSubs() {
     this.subsService.getSubs().subscribe(res=>{
       console.log(res);
     });
   }
-
 }

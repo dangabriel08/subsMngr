@@ -18,7 +18,11 @@ const routes: Routes = [
   {
     path: 'subs',
     loadChildren: () => import('./subs/subs.module').then( m => m.SubsPageModule)
+  },  {
+    path: 'add-subs',
+    loadChildren: () => import('./add-subs/add-subs.module').then( m => m.AddSubsPageModule)
   },
+
 ];
 
 @NgModule({

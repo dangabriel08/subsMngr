@@ -1,9 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>subs</ion-title>
+    <ion-title>Subcription Manager</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Credit Card</ion-card-subtitle>
+      <ion-card-title>Netflix</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Payment Method : Visa ending in 1234 Billing Date: 06/13/2022
+    </ion-card-content>
+  </ion-card>
 
+  <!-- Ion Fab -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-padding">
+    <ion-fab-button [routerLink]="['/add-subs']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
