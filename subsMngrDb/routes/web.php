@@ -16,12 +16,25 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+
+
 $router->group(['prefix' => 'api'], function () use ($router) {
-    // Subscriptions
-    $router->get(uri: '/subs/{user_id}', action: 'SubsController@getSubs');
-    $router->post(uri: '/subs/{user_id}', action: 'SubsController@addSubs');
-    $router->put(uri: '/subs/{id}', action: 'SubsController@editSubs');
-    $router->delete(uri: '/subs/{id}', action: 'SubsController@deleteSubs');
+
+    // user auth routes 
+
+    $router->post(uri: '/register', action: 'AuthController@register');
+    $router->post(uri: '/login', action: 'AuthController@login');
+
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+        // Subscriptions
+        $router->get(uri: '/subs/{user_id}', action: 'SubsController@getSubs');
+        $router->post(uri: '/subs/{user_id}', action: 'SubsController@addSubs');
+        $router->put(uri: '/subs/{id}', action: 'SubsController@editSubs');
+        $router->delete(uri: '/subs/{id}', action: 'SubsController@deleteSubs');
+        // logout
+        $router->post(uri: '/logout', action: 'AuthController@logout');
+    });
 });
 
 // $router->post(uri: '/subs/{user_id}', action: 'subscriptionsController@addSubscription');
