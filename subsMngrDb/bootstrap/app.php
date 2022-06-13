@@ -66,6 +66,7 @@ $app->singleton(
 // $app->configure('app');
 $app->configure('auth');
 $app->configure('service');
+$app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +86,10 @@ $app->configure('service');
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
-
+$app->middleware([
+    // ...
+    Fruitcake\Cors\HandleCors::class,
+]);
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -104,7 +108,7 @@ $app->routeMiddleware([
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
-
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
