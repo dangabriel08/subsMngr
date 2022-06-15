@@ -5,13 +5,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card *ngFor="let sub of subs">
     <ion-card-header>
-      <ion-card-subtitle>Credit Card</ion-card-subtitle>
-      <ion-card-title>Netflix</ion-card-title>
+      <ion-card-subtitle>{{sub.payment_method_type}}</ion-card-subtitle>
+      <ion-card-title>{{sub.subs_name}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      Payment Method : Visa ending in 1234 Billing Date: 06/13/2022
+      Payment Method : {{sub.payment_method_used}}
+      <br />
+      Billing Date: {{sub.billing_date}}
     </ion-card-content>
   </ion-card>
 
