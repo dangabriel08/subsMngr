@@ -11,13 +11,15 @@ class SubsController extends Controller
 
     public function getSubs(Request $request, $user_id)
     {
-        return Subs::all();
+        $subsAll = Subs::all();
+        return response()->json(['status' => 'success', 'results' => $subsAll]);
     }
     public function addSubs(Request $request, $user_id)
     {
         $sub = new Subs();
         $sub->user_id = $user_id;
-        $sub->subs_name = $request->subscription_name;
+        $sub->subs_name = $request->subs_name;
+        $sub->subs_price = $request->subs_price;
         $sub->billing_date = $request->billing_date;
         $sub->payment_method_used = $request->payment_method_used;
         $sub->payment_method_type = $request->payment_method_type;
@@ -39,6 +41,7 @@ class SubsController extends Controller
         $sub->id = $id;
         $sub->subs_name = $request->subs_name;
         $sub->billing_date = $request->billing_date;
+        $sub->subs_price = $request->subs_price;
         $sub->payment_method_used = $request->payment_method_used;
         $sub->payment_method_type = $request->payment_method_type;
 
