@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-subs',
@@ -6,10 +7,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-subs.page.scss'],
 })
 export class AddSubsPage implements OnInit {
+  private subsFormData: FormGroup
 
   constructor() { }
+  subsOptions = ["Netflix","Hulu", "Amazon Prime","Disney", "HBO" ];
+  paymentMethods = ["Credit Card", "Paypal"];
 
   ngOnInit() {
+
+    this.subsFormData = new FormGroup({
+      'subs_name': new FormControl(),
+      'subs_price': new FormControl(),
+      'billing_date': new FormControl(),
+      'payment_method_used': new FormControl(),
+      'payment_method_type':new FormControl()
+    });
+
   }
 
+  addSub(){
+    console.log(this.subsFormData.value);
+  }
 }
