@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SubsService } from '../services/subs.service';
-
+import { subsObject,subs, SubsService } from '../services/subs.service';
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-subs',
   templateUrl: './subs.page.html',
@@ -8,14 +8,29 @@ import { SubsService } from '../services/subs.service';
 })
 export class SubsPage implements OnInit {
 
-  constructor(private subsService:SubsService) { }
-
+  constructor(private subsService:SubsService, private loadingController: LoadingController) { }
+  subs  = <any>[];
   ngOnInit() {
-   this.getSubs();
+  this.getSubs();
   }
-   getSubs() {
-    this.subsService.getSubs().subscribe(res=>{
+
+  async getSubs() {
+    const loading = await this.loadingController.create({
+      spinner: null,
+      duration: 5000,
+      message: 'loading subs...',
+      translucent: true,
+      cssClass: '',
+      backdropDismiss: true
+    });
+
+    await loading.present();
+
+    this.subsService.getSubs(3).subscribe(res=>{
+     
+      loading.dismiss();
       console.log(res);
+      this.subs = [...this.subs, ...res.results];
     });
   }
 }

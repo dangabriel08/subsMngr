@@ -1,14 +1,74 @@
 <ion-header>
   <ion-toolbar>
+    <ion-back-button defaultHref="/subs" slot="start"></ion-back-button>
     <ion-title>Add Subscriptions</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-row>
-    <ion-item>
-      <ion-label position="floating">Subs Name</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-  </ion-row>
+  <h2 class="ion-margin">Enter Subscription Details</h2>
+  <form [formGroup]="subsFormData" (ngSubmit)="addSub()">
+    <ion-list class="ion-margin-top">
+      <!-- name -->
+      <ion-item class="ion-margin-horizontal ion-margin-bottom">
+        <ion-label position="stacked">Subs Name</ion-label>
+        <ion-select placeholder="Select One" formControlName="subs_name">
+          <ion-select-option
+            *ngFor="let subsOption of subsOptions"
+            value="{{subsOption}}"
+            >{{subsOption}}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <!-- Price -->
+      <ion-item class="ion-margin-horizontal ion-margin-bottom">
+        <ion-label position="stacked">Subs Price</ion-label>
+        <ion-input
+          type="number"
+          placeholder="$0.00"
+          formControlName="subs_price"
+        ></ion-input>
+      </ion-item>
+      <!-- subs date -->
+      <ion-item class="ion-margin-horizontal ion-margin-bottom">
+        <ion-label position="stacked ">Subs Date</ion-label>
+
+        <ion-datetime
+          presentation="date"
+          class="ion-margin-vertical"
+          formControlName="billing_date"
+        >
+          <div slot="title">My Custom Title</div>
+        </ion-datetime>
+      </ion-item>
+      <!-- subs method -->
+      <ion-item class="ion-margin-horizontal ion-margin-bottom">
+        <ion-label position="stacked">Payment Methods</ion-label>
+        <ion-select
+          placeholder="Select One"
+          formControlName="payment_method_type"
+        >
+          <ion-select-option
+            *ngFor="let paymentMethod of paymentMethods"
+            value="{{paymentMethod}}"
+            >{{paymentMethod}}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <!-- subs clue -->
+      <ion-item class="ion-margin-horizontal ion-margin-bottom">
+        <ion-label position="stacked">Payment Method Note</ion-label>
+        <ion-input
+          type="placeholder"
+          placeholder="Example Card ending in 1234"
+          formControlName="payment_method_used"
+        ></ion-input>
+      </ion-item>
+      <!-- submit button -->
+
+      <ion-button color="primary" expand="full" class="ion-margin" type="submit"
+        >Add Subscription</ion-button
+      >
+    </ion-list>
+  </form>
 </ion-content>
