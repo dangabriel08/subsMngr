@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
+import { LoadingController } from '@ionic/angular';
+import { SubsService } from '../services/subs.service';
 
 @Component({
   selector: 'app-add-subs',
@@ -8,8 +10,8 @@ import { FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
 })
 export class AddSubsPage implements OnInit {
   private subsFormData: FormGroup
-
-  constructor() { }
+  private subsFormValue;
+  constructor( private subsService:SubsService, private loadingController: LoadingController) { }
   subsOptions = ["Netflix","Hulu", "Amazon Prime","Disney", "HBO" ];
   paymentMethods = ["Credit Card", "Paypal"];
 
@@ -25,7 +27,10 @@ export class AddSubsPage implements OnInit {
 
   }
 
-  addSub(){
-    console.log(this.subsFormData.value);
+   addSub(){
+    this.subsService.addSubs(3, this.subsFormData.value).subscribe((res)=>{
+      console.log(res);
+    });
+    
   }
 }

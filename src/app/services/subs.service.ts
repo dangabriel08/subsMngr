@@ -1,4 +1,4 @@
-import { HttpClient ,HttpHeaders} from '@angular/common/http';
+import { HttpClient ,HttpHeaders, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -35,14 +35,22 @@ export class SubsService {
         return this.http.get<subsObject>(`${environment.getSubsEndpoint}/${user_id}`,requestOptions)
       }
 
-      addSubs(user_id):Observable<subsObject>{
+      addSubs(user_id, formValue):Observable<any>{
         const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': `Bearer ${environment.tempAccessToken}`
+          
         });
-        
+        console.log(formValue)
+        let params = new URLSearchParams();
+        params.append('subs_name', formValue.subs_name);
+        params.append('subs_price',formValue.subs_price);
+        params.append('billing_date',formValue.billing_date);
+        params.append('payment_method_type',formValue.payment_method_type);
+        params.append('payment_method_used',formValue.payment_method_used);
+     
       const requestOptions = { headers: headers };
-        return this.http.get<subsObject>(`${environment.getSubsEndpoint}/${user_id}`,requestOptions)
+        return this.http.post(`${environment.getSubsEndpoint}/${user_id}`, params.toString() ,requestOptions)
       }
 
 }
