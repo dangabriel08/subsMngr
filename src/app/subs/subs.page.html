@@ -5,17 +5,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let sub of subs">
-    <ion-card-header>
-      <ion-card-subtitle>{{sub.payment_method_type}}</ion-card-subtitle>
-      <ion-card-title>{{sub.subs_name}}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Payment Method : {{sub.payment_method_used}}
-      <br />
-      Billing Date: {{sub.billing_date}}
-    </ion-card-content>
-  </ion-card>
+  <ion-list *ngFor="let sub of subs">
+    <ion-item>
+      <ion-label>{{sub.subs_name}}</ion-label>
+    </ion-item>
+  </ion-list>
 
   <!-- Ion Fab -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-padding">

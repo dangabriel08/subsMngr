@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
-import { LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { SubsService } from '../services/subs.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { SubsService } from '../services/subs.service';
 export class AddSubsPage implements OnInit {
   private subsFormData: FormGroup
   private subsFormValue;
-  constructor( private subsService:SubsService, private loadingController: LoadingController) { }
+  constructor( private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router) { }
   subsOptions = ["Netflix","Hulu", "Amazon Prime","Disney", "HBO" ];
   paymentMethods = ["Credit Card", "Paypal"];
 
@@ -27,8 +28,34 @@ export class AddSubsPage implements OnInit {
 
   }
 
-   addSub(){
+  async addSub(){
+    const loading = await this.loadingController.create({
+      spinner: null,
+      duration: 5000,
+      message: 'loading subs...',
+      translucent: true,
+      cssClass: '',
+      backdropDismiss: true
+    });
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Success',
+      message: 'Subscription has been Added',
+      buttons: [{
+        text:"okay",
+        handler:()=>{
+          this.router.navigate(["/subs"]);
+        }
+      }]
+    });
+    await loading.present();
+
     this.subsService.addSubs(3, this.subsFormData.value).subscribe((res)=>{
+  
+      loading.dismiss().then(()=>
+      {
+        alert.present();
+      });
       console.log(res);
     });
     
