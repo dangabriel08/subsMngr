@@ -25,6 +25,8 @@ export class SubsService {
 
   constructor(private http: HttpClient) { }
 
+
+// Get Subs
       getSubs(user_id):Observable<subsObject>{
         const headers = new HttpHeaders({
           'Content-Type': 'application/json',
@@ -35,6 +37,9 @@ export class SubsService {
         return this.http.get<subsObject>(`${environment.getSubsEndpoint}/${user_id}`,requestOptions)
       }
 
+
+
+// addSubs
       addSubs(user_id, formValue):Observable<any>{
         const headers = new HttpHeaders({
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -51,6 +56,18 @@ export class SubsService {
      
       const requestOptions = { headers: headers };
         return this.http.post(`${environment.getSubsEndpoint}/${user_id}`, params.toString() ,requestOptions)
+      }
+
+// Delete Subs
+
+      deleteSubs(id){
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${environment.tempAccessToken}`
+        });
+        
+      const requestOptions = { headers: headers };
+        return this.http.delete<subsObject>(`${environment.getSubsEndpoint}/${id}`,requestOptions)
       }
 
 }

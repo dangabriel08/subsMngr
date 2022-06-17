@@ -18,9 +18,14 @@ const routes: Routes = [
   {
     path: 'subs',
     loadChildren: () => import('./subs/subs.module').then( m => m.SubsPageModule)
-  },  {
+  },
+  {
     path: 'add-subs',
     loadChildren: () => import('./add-subs/add-subs.module').then( m => m.AddSubsPageModule)
+  },
+  {
+    path: 'edit-subs/:id',
+    loadChildren: () => import('./edit-subs/edit-subs.module').then( m => m.EditSubsPageModule)
   },
 
 ];
