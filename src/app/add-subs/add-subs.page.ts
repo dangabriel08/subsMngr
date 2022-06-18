@@ -10,14 +10,17 @@ import { SubsService } from '../services/subs.service';
   styleUrls: ['./add-subs.page.scss'],
 })
 export class AddSubsPage implements OnInit {
+  private subsOptions:any;
+  private paymentMethods:any;
   private subsFormData: FormGroup
-  private subsFormValue;
+
   constructor( private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router) { }
-  subsOptions = ["Netflix","Hulu", "Amazon Prime","Disney", "HBO" ];
-  paymentMethods = ["Credit Card", "Paypal"];
 
   ngOnInit() {
 
+    this.subsOptions = this.subsService.getSubsOptions();
+    this.paymentMethods = this.subsService.getPaymentMethods();
+  
     this.subsFormData = new FormGroup({
       'subs_name': new FormControl(),
       'subs_price': new FormControl(),

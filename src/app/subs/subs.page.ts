@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { subsObject,subs, SubsService } from '../services/subs.service';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 @Component({
   selector: 'app-subs',
   templateUrl: './subs.page.html',
@@ -76,7 +76,9 @@ export class SubsPage implements OnInit {
   }
 
   editSubs(id,sub){
-    console.table(id,sub);
-    this.router.navigate([`edit-subs/${id}`],{state:{sub}});
+    const params:NavigationExtras = {
+      queryParams: sub
+    };
+    this.router.navigate([`edit-subs/${id}`],params);
   }
 }
