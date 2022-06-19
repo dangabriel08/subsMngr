@@ -33,7 +33,8 @@ class AuthController extends Controller
                 ]
             ]);
         } catch (BadResponseException $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            $message = $e->getMessage();
+            return response()->json(['status' => 'error', 'message' => 'user credentials is incorrect']);
         }
     }
 
