@@ -1,14 +1,40 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Subcription Manager</ion-title>
+    <ion-title>Subcription Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list *ngFor="let sub of subs">
-    <ion-item>
-      <ion-label>{{sub.subs_name}}</ion-label>
-    </ion-item>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label class="ion-padding"
+          ><strong>{{sub.subs_name}} </strong>
+          <ion-badge color="primary">{{sub.billing_date}}</ion-badge>
+          <ion-text>
+            <h4><strong>Subs Cost: </strong> $ {{sub.subs_price}}</h4>
+            <h4><strong>Subs Type: </strong> {{sub.payment_method_type}}</h4>
+            <h4><strong>Subs Note: </strong> {{sub.payment_method_used}}</h4>
+          </ion-text>
+        </ion-label>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option
+          (click)="deleteSubs(sub.subs_name, sub.id)"
+          color="danger"
+          class="ion-padding-horizontal"
+          >Delete</ion-item-option
+        >
+        <ion-item-option
+          (click)="editSubs(sub.id,sub)"
+          color="primary"
+          class="ion-padding-horizontal"
+          >Edit</ion-item-option
+        >
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
   <!-- Ion Fab -->

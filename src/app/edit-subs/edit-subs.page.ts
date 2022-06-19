@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormGroup, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { SubsService } from '../services/subs.service';
 
 @Component({
-  selector: 'app-add-subs',
-  templateUrl: './add-subs.page.html',
-  styleUrls: ['./add-subs.page.scss'],
+  selector: 'app-edit-subs',
+  templateUrl: './edit-subs.page.html',
+  styleUrls: ['./edit-subs.page.scss'],
 })
-export class AddSubsPage implements OnInit {
+export class EditSubsPage implements OnInit {
+
   private subsOptions:any;
   private paymentMethods:any;
-  private subsFormData: FormGroup
+  private subsDetails:any;
+  private subsFormData: FormGroup;
+  item: any;
 
-  constructor( private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router) { }
+  constructor(private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
     this.subsOptions = this.subsService.getSubsOptions();
     this.paymentMethods = this.subsService.getPaymentMethods();
-  
+
     this.subsFormData = new FormGroup({
       'subs_name': new FormControl(),
       'subs_price': new FormControl(),
@@ -29,9 +31,25 @@ export class AddSubsPage implements OnInit {
       'payment_method_type':new FormControl()
     });
 
+    this.route.queryParamMap.subscribe((params)=>{
+      this.subsDetails = params;
+      this.subsFormData.patchValue({
+      'subs_name': params.get('subs_name'),
+      'subs_price': params.get('subs_price'),
+      'billing_date':params.get('billing_date'),
+      'payment_method_used': params.get('payment_method_used'),
+      'payment_method_type':params.get('payment_method_type'),
+
+      });
+      console.table(this.subsDetails);
+    
+    });
+    
   }
 
-  async addSub(){
+  async editSub()
+  {
+
     const loading = await this.loadingController.create({
       spinner: null,
       duration: 5000,
@@ -43,7 +61,7 @@ export class AddSubsPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Success',
-      message: 'Subscription has been Added',
+      message: 'Subscription has been udpated',
       buttons: [{
         text:"okay",
         handler:()=>{
@@ -53,14 +71,16 @@ export class AddSubsPage implements OnInit {
     });
     await loading.present();
 
-    this.subsService.addSubs(3, this.subsFormData.value).subscribe((res)=>{
-  
+    this.subsService.editSubs(this.subsDetails.get('id'), this.subsFormData.value).subscribe((res)=>
+    { 
+      
       loading.dismiss().then(()=>
       {
         alert.present();
       });
       console.log(res);
     });
-    
+    console.table(this.subsFormData.value);
   }
+
 }

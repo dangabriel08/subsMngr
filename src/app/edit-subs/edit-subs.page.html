@@ -1,13 +1,14 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button defaultHref="/subs" slot="start"></ion-back-button>
-    <ion-title>Add Subscription</ion-title>
+
+    <ion-title>Edit Subscription</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <h4 class="ion-margin ion-text-center">Enter Subscription Details</h4>
-  <form [formGroup]="subsFormData" (ngSubmit)="addSub()">
+  <form [formGroup]="subsFormData" (ngSubmit)="editSub()">
     <ion-list class="ion-margin-top">
       <!-- name -->
       <ion-item class="ion-margin-horizontal ion-margin-bottom">
