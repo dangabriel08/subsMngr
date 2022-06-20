@@ -1,7 +1,9 @@
 import { HttpClient ,HttpHeaders, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Storage} from '@ionic/storage-angular';
+import { Observable ,from , forkJoin} from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
 export interface subs{
   id: number;
   user_id: number;
@@ -22,9 +24,19 @@ export interface subsObject {
 })
 
 export class SubsService {
+  private TOKEN_KEY = '';
+  private _storage : Storage | null = null;
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient,private storage:Storage, private authService: AuthService) 
+  { 
+    this.init();
+  } 
+  
+      async init()
+      {
+        const storage = await this.storage.create();
+        this._storage = storage;
+      }
       getSubsOptions (){
         let subsOptions:any;
         subsOptions = ["Netflix","Hulu", "Amazon Prime","Disney", "HBO" ];
@@ -38,23 +50,27 @@ export class SubsService {
         return paymentMethods;
       }
 // Get Subs
-      getSubs(user_id):Observable<subsObject>{
+      getSubs(user_id,authInfo):Observable<subsObject>{
+       
         const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${environment.tempAccessToken}`
-        });
-        
-      const requestOptions = { headers: headers };
-        return this.http.get<subsObject>(`${environment.getSubsEndpoint}/${user_id}`,requestOptions)
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${authInfo.access_token}`
+        }); 
+   
+        const requestOptions = { headers: headers };
+
+        return this.http.get<subsObject>(`${environment.getSubsEndpoint}/${user_id}`,requestOptions).pipe()
+
+
       }
 
 
 
 // addSubs
-      addSubs(user_id, formValue):Observable<any>{
+      addSubs(user_id, formValue, authInfo):Observable<any>{
         const headers = new HttpHeaders({
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Bearer ${environment.tempAccessToken}`
+          'Authorization': `Bearer ${authInfo.access_token}`
           
         });
         console.log(formValue)
@@ -71,10 +87,10 @@ export class SubsService {
 
 // Delete Subs
 
-      deleteSubs(id){
+      deleteSubs(id,auth_info){
         const headers = new HttpHeaders({
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${environment.tempAccessToken}`
+          'Authorization': `Bearer ${auth_info.access_token}`
         });
         
       const requestOptions = { headers: headers };
@@ -82,10 +98,10 @@ export class SubsService {
       }
 
       // editSubs
-      editSubs(user_id, formValue):Observable<any>{
+      editSubs(user_id, formValue, authInfo):Observable<any>{
         const headers = new HttpHeaders({
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Bearer ${environment.tempAccessToken}`
+          'Authorization': `Bearer ${authInfo.access_token}`
           
         });
         console.log(formValue)

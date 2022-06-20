@@ -3,7 +3,7 @@ import { FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { SubsService } from '../services/subs.service';
-
+import {Storage} from '@ionic/storage-angular';
 @Component({
   selector: 'app-add-subs',
   templateUrl: './add-subs.page.html',
@@ -13,8 +13,8 @@ export class AddSubsPage implements OnInit {
   private subsOptions:any;
   private paymentMethods:any;
   private subsFormData: FormGroup
-
-  constructor( private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router) { }
+  private authInfo: any;
+  constructor( private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router, private storage: Storage) { }
 
   ngOnInit() {
 
@@ -52,8 +52,8 @@ export class AddSubsPage implements OnInit {
       }]
     });
     await loading.present();
-
-    this.subsService.addSubs(3, this.subsFormData.value).subscribe((res)=>{
+    this.authInfo = await this.storage.get("authInfo");
+    this.subsService.addSubs(3, this.subsFormData.value, this.authInfo).subscribe((res)=>{
   
       loading.dismiss().then(()=>
       {

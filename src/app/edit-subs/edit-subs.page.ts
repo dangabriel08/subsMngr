@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { SubsService } from '../services/subs.service';
-
+import { Storage } from '@ionic/storage-angular';
 @Component({
   selector: 'app-edit-subs',
   templateUrl: './edit-subs.page.html',
@@ -15,9 +15,10 @@ export class EditSubsPage implements OnInit {
   private paymentMethods:any;
   private subsDetails:any;
   private subsFormData: FormGroup;
+  private authInfo: any;
   item: any;
 
-  constructor(private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router, private route: ActivatedRoute) { }
+  constructor(private subsService:SubsService, private loadingController: LoadingController, public alertController: AlertController,private router: Router, private route: ActivatedRoute,private storage:Storage) { }
 
   ngOnInit() {
     this.subsOptions = this.subsService.getSubsOptions();
@@ -70,8 +71,8 @@ export class EditSubsPage implements OnInit {
       }]
     });
     await loading.present();
-
-    this.subsService.editSubs(this.subsDetails.get('id'), this.subsFormData.value).subscribe((res)=>
+    this.authInfo = await this.storage.get("authInfo");
+    this.subsService.editSubs(this.subsDetails.get('id'), this.subsFormData.value, this.authInfo ).subscribe((res)=>
     { 
       
       loading.dismiss().then(()=>

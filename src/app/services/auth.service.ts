@@ -26,41 +26,38 @@ export interface authObject {
 
 export class AuthService {
 
-  public user : Observable<any>;
+  public user:Observable<any>;
   public userData = new BehaviorSubject(null);
-  
-  constructor(private http: HttpClient, private storage: Storage, private platform:Platform, private router: Router) 
+  private _storage: Storage | null = null;
+
+   constructor(private http: HttpClient, private storage: Storage, private platform:Platform, private router: Router) 
   {
+    this.init();
+  }
+  async init() {
+    // If using, define drivers here: await this.storage.defineDriver(/*...*/);
+    const storage = await this.storage.create();
+    this.loadStoredToken();
 
   }
-
-  loadStoredToken()
+  // loadStorage()
+  // {
+  //   return this._storage;
+  // }
+    loadStoredToken()
   {
-    let platformObs = from(this.platform.ready());
-    this.user = platformObs.pipe(
-      switchMap(()=>{
-        return from(this.storage.get('TOKEN_KEY'));
-      }),
-      map(token=>{
-       console.log("Token from Storage: " + token);
 
-       if(token)
-       {
-        return true;
-       }
-       else{
-        return false;
-       }
-      })
-    )
-    return false;
+
+    console.log("authInfo - from auth service " , this.storage.get('authInfo'));
+    this.user =  from(this.storage.get('authInfo'));
+
+
   }
 
   login(email, password){
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Bearer ${environment.tempAccessToken}`
+      'Content-Type': 'application/x-www-form-urlencoded'
       
     });
    
@@ -69,7 +66,14 @@ export class AuthService {
     params.append('password',password);
  
   const requestOptions = { headers: headers };
-    return this.http.post<authObject>(`${environment.authEndpoint}/login`, params.toString() ,requestOptions)
+    return this.http.post<authObject>(`${environment.authEndpoint}/login`, params.toString() ,requestOptions).pipe(
+      take(1),
+      map((res)=>{
+        console.log(res);
+        let storageObs = from (this.storage.set('authInfo', res.auth_info));
+        return res;
+      })
+    );
   }
 
 }
