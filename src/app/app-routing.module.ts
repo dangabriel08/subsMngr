@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -17,15 +18,20 @@ const routes: Routes = [
   },
   {
     path: 'subs',
-    loadChildren: () => import('./subs/subs.module').then( m => m.SubsPageModule)
+    loadChildren: () => import('./subs/subs.module').then( m => m.SubsPageModule ),
+    canActivate:[AuthGuard]
   },
   {
     path: 'add-subs',
-    loadChildren: () => import('./add-subs/add-subs.module').then( m => m.AddSubsPageModule)
+    loadChildren: () => import('./add-subs/add-subs.module').then( m => m.AddSubsPageModule),
+    canActivate:[AuthGuard]
+
   },
   {
     path: 'edit-subs/:id',
-    loadChildren: () => import('./edit-subs/edit-subs.module').then( m => m.EditSubsPageModule)
+    loadChildren: () => import('./edit-subs/edit-subs.module').then( m => m.EditSubsPageModule),
+    canActivate:[AuthGuard]
+
   },
 
 ];

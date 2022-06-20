@@ -2,17 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { subsObject,subs, SubsService } from '../services/subs.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { NavigationExtras, Router } from '@angular/router';
+import {Storage} from '@ionic/storage-angular';
 @Component({
   selector: 'app-subs',
   templateUrl: './subs.page.html',
   styleUrls: ['./subs.page.scss'],
 })
 export class SubsPage implements OnInit {
-
-  constructor(private subsService:SubsService, private loadingController: LoadingController, private alertController:AlertController,public router: Router) { }
+  private authInfo = null;
+  constructor(private subsService:SubsService, private loadingController: LoadingController, private alertController:AlertController,public router: Router, private storage:Storage ){ }
   subs  = <any>[];
-  ngOnInit() {
-  this.getSubs();
+  async ngOnInit() {
+    this.authInfo = await this.storage.get("authInfo");
+
+  if(this.authInfo != null)
+  {
+    this.getSubs();
+  }
+
   }
 
   async getSubs() {
@@ -26,8 +33,8 @@ export class SubsPage implements OnInit {
     });
 
     await loading.present();
-
-    this.subsService.getSubs(3).subscribe(res=>{
+    this.authInfo = await this.storage.get("authInfo");
+    await this.subsService.getSubs(3,this.authInfo).subscribe(res=>{
      
       loading.dismiss();
       console.log(res);
@@ -48,7 +55,7 @@ export class SubsPage implements OnInit {
         
       }]
     });
-    
+    this.authInfo = await this.storage.get("authInfo");
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Warning',
@@ -58,7 +65,7 @@ export class SubsPage implements OnInit {
         cssClass:"danger",
         handler:()=>{
 
-          this.subsService.deleteSubs(id).subscribe(res=>{  
+          this.subsService.deleteSubs(id,this.authInfo).subscribe(res=>{  
               this.getSubs().then(()=>{});
           });
        

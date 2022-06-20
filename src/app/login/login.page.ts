@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
-
+import {from} from 'rxjs/';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -45,11 +45,12 @@ export class LoginPage implements OnInit {
     });
     const success_alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Login Success',
-      message: 'Tap OK to continue',
+      header: 'Login Successful',
+      message: 'Redirecting now to the dashboard',
       buttons: [{
         text:"Ok",
         handler:()=>{
+          this
         }
       }]
     });
@@ -58,8 +59,14 @@ export class LoginPage implements OnInit {
     this.authService.login(this.userLoginFormData.value.email,this.userLoginFormData.value.password).subscribe((res) =>{
       if(res.status == "success")
       {
-        loading.dismiss();
-        success_alert.present();
+        let loading = from (this.loadingController.dismiss());
+        loading.subscribe(()=>{
+          success_alert.present();
+          this.router.navigate(["/subs"]);
+        });
+        
+       
+        
       }
       else if (res.status == "error")
       {
