@@ -23,7 +23,7 @@ class AuthController extends Controller
         $client = new Client();
 
         try {
-            return $client->post(config(key: 'service.passport.login_endpoint'), [
+            $response =  $client->post(config(key: 'service.passport.login_endpoint'), [
                 'form_params' => [
                     'client_secret' => config(key: 'service.passport.client_secret'),
                     'grant_type' => "password",
@@ -32,6 +32,9 @@ class AuthController extends Controller
                     'password' => $request->password
                 ]
             ]);
+            $body = json_decode($response->getBody());
+
+            return  response()->json(['status' => 'success', 'auth_info' => $body]);
         } catch (BadResponseException $e) {
             $message = $e->getMessage();
             return response()->json(['status' => 'error', 'message' => 'user credentials is incorrect']);
