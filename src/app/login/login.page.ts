@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
       buttons: [{
         text:"Ok",
         handler:()=>{
-          this
+          
         }
       }]
     });
@@ -64,16 +64,15 @@ export class LoginPage implements OnInit {
           success_alert.present();
           this.router.navigate(["/subs"]);
         });
-        
-       
-        
+    
       }
       else if (res.status == "error")
       {
         loading.dismiss();
         error_alert.present();
+       
       }
-      console.table(res);
+      console.log("Login Status:" , res.status);
    
     });
   }

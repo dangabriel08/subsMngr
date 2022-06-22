@@ -46,12 +46,8 @@ export class AuthService {
   // }
     loadStoredToken()
   {
-
-
     console.log("authInfo - from auth service " , this.storage.get('authInfo'));
     this.user =  from(this.storage.get('authInfo'));
-
-
   }
 
   login(email, password){
@@ -69,8 +65,12 @@ export class AuthService {
     return this.http.post<authObject>(`${environment.authEndpoint}/login`, params.toString() ,requestOptions).pipe(
       take(1),
       map((res)=>{
-        console.log(res);
         let storageObs = from (this.storage.set('authInfo', res.auth_info));
+        storageObs.subscribe((res)=>{
+          console.log("storageObs", res);
+          console.log("storage authInfo",this.storage.get('authInfo'));
+
+        })
         return res;
       })
     );
