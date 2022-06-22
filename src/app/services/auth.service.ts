@@ -17,6 +17,7 @@ export interface AuthInfo {
 
 export interface authObject {
   status: string;
+  message?:string;
   auth_info: AuthInfo;
 }
 @Injectable({
@@ -74,6 +75,22 @@ export class AuthService {
         return res;
       })
     );
+  }
+
+  register(first_name,last_name,email,password){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+      
+    });
+    let params = new URLSearchParams();
+    params.append('first_name', first_name);
+    params.append('last_name', last_name);
+    params.append('email', email);
+    params.append('password',password);
+    const requestOptions = { headers: headers };
+    return this.http.post<authObject>(`${environment.authEndpoint}/register` ,  params.toString(),requestOptions)
+ 
+   
   }
 
 }

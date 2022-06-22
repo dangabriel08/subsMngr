@@ -5,5 +5,71 @@
 </ion-header>
 
 <ion-content>
-
+  <form [formGroup]="userRegisterFormData" (ngSubmit)="registerUser()">
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center>
+            <h3>Login</h3>
+          </div>
+          <div padding>
+            <ion-item>
+              <ion-input
+                name="first_name"
+                type="text"
+                placeholder="First Name"
+                formControlName="first_name"
+                required
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input
+                name="last_name"
+                type="text"
+                placeholder="Last Name"
+                formControlName="last_name"
+                required
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input
+                name="email"
+                type="email"
+                placeholder="your@email.com"
+                formControlName="email"
+                required
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input
+                name="password"
+                type="password"
+                placeholder="Password"
+                formControlName="password"
+                required
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                formControlName="confirmPassword"
+                required
+              ></ion-input>
+            </ion-item>
+          </div>
+          <div padding>
+            <ion-button
+              size="large"
+              type="submit"
+              [disabled]="userRegisterFormData.invalid"
+              expand="block"
+              >Register</ion-button
+            >
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
