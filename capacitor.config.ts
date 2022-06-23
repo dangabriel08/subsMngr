@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.danagbriel.subsmngr',
+  appId: 'io.dangabriel.subsmngr',
   appName: 'subsMngr',
   webDir: 'www',
   bundledWebRuntime: false
