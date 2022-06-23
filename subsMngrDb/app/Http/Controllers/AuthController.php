@@ -34,7 +34,9 @@ class AuthController extends Controller
             ]);
             $body = json_decode($response->getBody());
 
-            return  response()->json(['status' => 'success', 'auth_info' => $body]);
+            $userInfo = User::where('email', $email)->take(1)->get();
+
+            return  response()->json(['status' => 'success', 'auth_info' => $body, 'userInfo' => $userInfo]);
         } catch (BadResponseException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
