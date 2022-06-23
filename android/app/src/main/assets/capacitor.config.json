@@ -1,0 +1,6 @@
+{
+	"appId": "io.danagbriel.subsmngr",
+	"appName": "subsMngr",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

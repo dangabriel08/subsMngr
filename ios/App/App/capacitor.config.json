@@ -1,0 +1,6 @@
+{
+	"appId": "io.dangabriel.subsmngr",
+	"appName": "subsMngr",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
