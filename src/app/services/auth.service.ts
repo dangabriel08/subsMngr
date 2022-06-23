@@ -19,6 +19,7 @@ export interface authObject {
   status: string;
   message?:string;
   auth_info: AuthInfo;
+  userInfo?:string
 }
 @Injectable({
   providedIn: 'root'
@@ -66,12 +67,15 @@ export class AuthService {
     return this.http.post<authObject>(`${environment.authEndpoint}/login`, params.toString() ,requestOptions).pipe(
       take(1),
       map((res)=>{
+        console.log("requestRes: ", res);
         let storageObs = from (this.storage.set('authInfo', res.auth_info));
-        storageObs.subscribe((res)=>{
-          console.log("storageObs", res);
+        storageObs.subscribe((storageRes)=>{
+          from (this.storage.set('userInfo', res.userInfo));
+          console.log("storageObs", storageRes);
           console.log("storage authInfo",this.storage.get('authInfo'));
 
-        })
+        });
+        
         return res;
       })
     );

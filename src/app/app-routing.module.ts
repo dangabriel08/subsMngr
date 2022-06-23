@@ -33,6 +33,11 @@ const routes: Routes = [
     canActivate:[AuthGuard]
 
   },
+  {
+    path: 'account',
+    loadChildren: () => import('./user-dashboard/user-dashboard.module').then( m => m.UserDashboardPageModule)
+  },
+
 
 ];
 
